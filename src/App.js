@@ -7,16 +7,33 @@ import { TodoItem } from './TodoItem';
 import { CreateTodoButton } from './CreateTodoButton';
 import React from 'react';
 
-const defaultTodos = [  
-  {  text: 'leer 5 pag diarias', completed: true },
-  {  text: 'Estudiar React 30 min al dia', completed: false },
-  {  text: 'Hacer ejercicio antes de las 10 am', completed: false },
-  {  text: 'Entrenar TT', completed: true },
-  {  text: 'Chambiar', completed: false }
-];
+// const defaultTodos = [  
+//   {  text: 'leer 5 pag diarias', completed: true },
+//   {  text: 'Estudiar React 30 min al dia', completed: false },
+//   {  text: 'Hacer ejercicio antes de las 10 am', completed: false },
+//   {  text: 'Entrenar TT', completed: true },
+//   {  text: 'Chambiar', completed: false }
+// ];
+
+// localStorage.setItem('TODOS_V1', defaultTodos);
+// const stringifiedTodos = JSON.stringify(defaultTodos)
+// localStorage.setItem('TODOS_V1',stringifiedTodos)
+
+// localStorage.removeItem('TODOS_V1');  
 
 function App() {
-  const [todos, setTodos] = React.useState(defaultTodos)
+  const localStorageTodos = localStorage.getItem('TODOS_V1');
+
+  let parsedTodos;
+
+  if (!localStorageTodos) {
+    localStorage.setItem('TODOS_V1', JSON.stringify([]));
+    parsedTodos = [];
+  } else {
+    parsedTodos = JSON.parse(localStorageTodos);
+  }
+
+  const [todos, setTodos] = React.useState(parsedTodos);
   const [searchValue, setSearchValue] = React.useState('');
   const completedTodos = todos.filter(
     todos => !!todos.completed
@@ -31,18 +48,24 @@ function App() {
     }
   );
 
+  const saveTodos = (newTodos) => {
+    localStorage.setItem('TODOS_V1', JSON.stringify(newTodos));
+    setTodos(newTodos);
+  }
+
+
   const completeTodo = (text) => {
     const newTodos = [...todos];
     const todoIndex = todos.findIndex(todo => todo.text === text);
     newTodos[todoIndex].completed = true;
-    setTodos(newTodos); 
+    saveTodos(newTodos); 
   };
 
   const deleteTodo = (text) => {
     const newTodos = [...todos];
     const todoIndex = todos.findIndex(todo => todo.text === text);
     newTodos.splice(todoIndex, 1);
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
 
   //console.log('Los usuarios estan buscando Todos de ' + searchValue);
