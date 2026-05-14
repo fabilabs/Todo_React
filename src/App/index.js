@@ -2,74 +2,17 @@
 import React from 'react';
 import './App.css';
 import  {AppUI} from './AppUI';
-import { useLocalStorage } from './useLocalStorage';
-
-
-// const defaultTodos = [  
-//   {  text: 'leer 5 pag diarias', completed: true },
-//   {  text: 'Estudiar React 30 min al dia', completed: false },
-//   {  text: 'Hacer ejercicio antes de las 10 am', completed: false },
-//   {  text: 'Entrenar TT', completed: true },
-//   {  text: 'Chambiar', completed: false }
-// ];
-
-
-// const stringifiedTodos = JSON.stringify(defaultTodos)
-// localStorage.setItem('TODOS_V1',stringifiedTodos)
-
-// localStorage.removeItem('TODOS_V1');  
-// localStorage.setItem('TODOS_V1', defaultTodos);
+import { TodoProvider } from '../TodoContex';
 
 
 function App() {
-  const {
-    item: todos,
-    saveItem: saveTodos,
-    loading,
-    error,
-  } = useLocalStorage('TODOS_V1',[]);
-  const [searchValue, setSearchValue] = React.useState('');
-  const completedTodos = todos.filter(
-    todos => !!todos.completed
-  ).length;
-  const totalTodos = todos.length;
-
-  const searchedTodos = todos.filter(
-    (todo) => {
-      const todoText = todo.text.toLowerCase();
-      const searchText = searchValue.toLowerCase();
-      return todoText.includes(searchText);
-    }
-  );
-
-  const completeTodo = (text) => {
-    const newTodos = [...todos];
-    const todoIndex = todos.findIndex(todo => todo.text === text);
-    newTodos[todoIndex].completed = true;
-    saveTodos(newTodos); 
-  };
-
-  const deleteTodo = (text) => {
-    const newTodos = [...todos];
-    const todoIndex = todos.findIndex(todo => todo.text === text);
-    newTodos.splice(todoIndex, 1);
-    saveTodos(newTodos);
-  };
 
   //console.log('Los usuarios estan buscando Todos de ' + searchValue);
 
   return (
-    <AppUI
-      loading = {loading}
-      error = {error}
-      completedTodos={completedTodos}
-      totalTodos={totalTodos}
-      searchValue={searchValue}
-      setSearchValue={setSearchValue}
-      searchedTodos={searchedTodos}
-      completeTodo={completeTodo}
-      deleteTodo={deleteTodo}
-    />
+    <TodoProvider>
+      <AppUI/>
+    </TodoProvider>
   );
 }
 

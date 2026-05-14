@@ -1,6 +1,5 @@
 import React from "react";
 
-
 function useLocalStorage(ItemName, initialValue){
   const [item, setItem] = React.useState(initialValue);
   const [loading, setLoading] = React.useState(true);
@@ -43,3 +42,20 @@ function useLocalStorage(ItemName, initialValue){
 }
 
 export {useLocalStorage};
+
+
+// const defaultTodos = [  
+//   {  text: 'leer 5 pag diarias', completed: true },
+//   {  text: 'Estudiar React 30 min al dia', completed: false },
+//   {  text: 'Hacer ejercicio antes de las 10 am', completed: false },
+//   {  text: 'Entrenar TT', completed: true },
+//   {  text: 'Chambiar', completed: false }
+// ];
+
+
+// const stringifiedTodos = JSON.stringify(defaultTodos)
+// localStorage.setItem('TODOS_V1',stringifiedTodos)
+
+// localStorage.removeItem('TODOS_V1');  
+// localStorage.setItem('TODOS_V1', defaultTodos);
+
