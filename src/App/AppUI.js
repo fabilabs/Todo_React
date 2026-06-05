@@ -7,24 +7,25 @@ import { TodosLoading } from '../TodosLoading';
 import { TodosError } from '../TodosError';
 import { EmptyTodos } from '../EmptyTodos';
 import { CreateTodoButton } from '../CreateTodoButton';
+import { Modal } from '../Modal';
 import { TodoContext } from '../TodoContex';
 
 function AppUI(){
+    const {
+        loading,
+        error,
+        searchedTodos,
+        completeTodo,
+        deleteTodo,
+        openModal,
+        setOpenModal
+    } = React.useContext(TodoContext);
    return (
         <>
             <TodoCounter/>
             <TodoSearch/>
 
-            <TodoContext.Consumer>
-                {({
-                    loading,
-                    error,
-                    searchedTodos,
-                    completeTodo,
-                    deleteTodo,
-
-                }) => (
-                    <TodoList>
+            <TodoList>
                         {loading && 
                             <>
                                 <TodosLoading/>
@@ -44,11 +45,15 @@ function AppUI(){
                                 onDelete={() => deleteTodo(todo.text)}
                             />
                         ))} 
-                    </TodoList>
-                )}
-            </TodoContext.Consumer>
-
+            </TodoList>
+            
             <CreateTodoButton />
+
+            {openModal && (
+                <modal>
+                    La funcionalidad de agregar todos
+                </modal>
+            )}
 
         </>
     );
