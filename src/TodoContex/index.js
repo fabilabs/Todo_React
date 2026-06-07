@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocalStorage } from "./useLocalStorage";
+import { flushSync } from "react-dom";
 
 const TodoContext = React.createContext();
 
@@ -26,6 +27,15 @@ function TodoProvider({children}){
         }
     );
 
+    const addTodo = (text) => {
+        const newTodos = [...todos];
+        newTodos.push({
+            text,
+            completed:false,
+        });
+        saveTodos(newTodos);
+    };
+
     const completeTodo = (text) => {
         const newTodos = [...todos];
         const todoIndex = todos.findIndex(todo => todo.text === text);
@@ -40,9 +50,6 @@ function TodoProvider({children}){
         saveTodos(newTodos);
     };
 
-
-
-
     return(
         <TodoContext.Provider value={{
             loading,
@@ -52,6 +59,7 @@ function TodoProvider({children}){
             searchValue,
             setSearchValue,
             searchedTodos,
+            addTodo,
             completeTodo,
             deleteTodo,
             openModal, 
